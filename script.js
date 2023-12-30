@@ -1,3 +1,16 @@
+const rock = document.querySelector(".rock");
+const paper = document.querySelector(".paper");
+const scissors = document.querySelector(".scissors");
+const playScore = document.querySelector(".player-score");
+const compScore = document.querySelector(".computer-score");
+const result = document.querySelector(".round-result");
+const winner = document.querySelector(".game-result");
+
+let playerSelection;
+let computerSelection;
+let playerScore = 0;
+let computerScore = 0;
+
 function getComputerChoice() {
   let random = Math.floor(Math.random() * 3 + 1);
   if (random === 1) {
@@ -9,52 +22,63 @@ function getComputerChoice() {
   }
 }
 
-let playerSelection;
-let computerSelection;
-
 function playRound(playerSelection, computerSelection) {
-  playerSelection = prompt(`Pick Rock, Paper, or Scissors`).toLowerCase();
-  computerSelection = getComputerChoice();
-  //One if statment works, When I try to use || it breaks.
   if (playerSelection === computerSelection) {
-    return `Tie! You both chose ${computerSelection}.  Try again`;
+    result.textContent = `Tie! You both chose ${computerSelection}.  Try again`;
   }
   if (playerSelection === "rock" && computerSelection === "scissors") {
     playerScore++;
-    return `You win! Computer chose ${computerSelection}.  Rock beats Scissors`;
+    playScore.textContent = playerScore;
+    result.textContent = `You win! Computer chose ${computerSelection}.  Rock beats Scissors`;
   } else if (playerSelection === "paper" && computerSelection === "rock") {
     playerScore++;
-    return `You win! Computer chose ${computerSelection}.  Paper beats Rock`;
+    playScore.textContent = playerScore;
+    result.textContent = `You win! Computer chose ${computerSelection}.  Paper beats Rock`;
   } else if (playerSelection === "scissors" && computerSelection === "paper") {
     playerScore++;
-    return `You win! Computer chose ${computerSelection}.  Scissors beats Paper`;
+    playScore.textContent = playerScore;
+    result.textContent = `You win! Computer chose ${computerSelection}.  Scissors beats Paper`;
   }
   if (computerSelection === "rock" && playerSelection === "scissors") {
     computerScore++;
-    return `You lose! Computer chose ${computerSelection}.  Rock beats Scissors`;
+    compScore.textContent = computerScore;
+    result.textContent = `You lose! Computer chose ${computerSelection}.  Rock beats Scissors`;
   } else if (computerSelection === "paper" && playerSelection === "rock") {
     computerScore++;
-    return `You lose! Computer chose ${computerSelection}.  Paper beats Rock`;
+    compScore.textContent = computerScore;
+    result.textContent = `You lose! Computer chose ${computerSelection}.  Paper beats Rock`;
   } else if (computerSelection === "scissors" && playerSelection === "paper") {
     computerScore++;
-    return `You lose! Computer chose ${computerSelection}.  Scissors beats Paper`;
+    compScore.textContent = computerScore;
+    result.textContent = `You lose! Computer chose ${computerSelection}.  Scissors beats Paper`;
   }
 }
-let playerScore = 0;
-let computerScore = 0;
+
+rock.addEventListener("click", function () {
+  playerSelection = "rock";
+  computerSelection = getComputerChoice();
+  game();
+});
+
+paper.addEventListener("click", function () {
+  playerSelection = "paper";
+  computerSelection = getComputerChoice();
+  game();
+});
+
+scissors.addEventListener("click", function () {
+  playerSelection = "scissors";
+  computerSelection = getComputerChoice();
+  game();
+});
 
 function game() {
   while (playerScore < 3 && computerScore < 3) {
-    console.log(playRound(playerSelection, computerSelection));
-    console.log(
-      `Player Score: ${playerScore} \nComputer Score: ${computerScore}`
-    );
+    return playRound(playerSelection, computerSelection);
   }
   if (playerScore === 3) {
-    console.log(`You have won best of five rounds!`);
+    winner.textContent = `You won the best of 5 rounds!`;
   } else if (computerScore === 3) {
-    console.log(`You have lost best of five rounds!`);
+    winner.textContent = `You lost the best of 5 rounds!`;
   }
 }
-
-game();
